@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aditya's Resume Builder – ATS-Friendly Professional Resume</title>
+  <meta name="description"
+    content="Build a professional, ATS-optimized resume in minutes. Live preview, PDF download, and beautiful design — all in one place." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <!-- html2pdf library for PDF generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+
+<body>
+
+  <!-- ═══════════════════ TOP NAVBAR ═══════════════════ -->
+  <header class="navbar" id="navbar">
+    <div class="navbar-brand">
+      <span class="brand-icon">⚡</span>
+      <span class="brand-name">Aditya's Resume Builder</span>
+    </div>
+    <nav class="navbar-actions">
+      <button id="btn-save-draft" class="btn btn-ghost" title="Save draft to browser">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" />
+          <polyline points="17 21 17 13 7 13 7 21" />
+          <polyline points="7 3 7 8 15 8" />
+        </svg>
+        Save Draft
+      </button>
+      <button id="btn-load-draft" class="btn btn-ghost" title="Load saved draft">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 002-2v-4M17 8l-5-5-5 5M12 3v12" />
+        </svg>
+        Load Draft
+      </button>
+      <button id="btn-theme-toggle" class="btn btn-ghost btn-icon" title="Toggle dark mode" aria-label="Toggle theme">
+        <span class="theme-icon">🌙</span>
+      </button>
+      <button id="btn-download-pdf" class="btn btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+          <polyline points="7 10 12 15 17 10" />
+          <line x1="12" y1="15" x2="12" y2="3" />
+        </svg>
+        Download PDF
+      </button>
+    </nav>
+  </header>
+
+  <!-- ═══════════════════ HERO BANNER ═══════════════════ -->
+  <section class="hero-banner">
+    <div class="hero-content">
+      <div class="hero-badge">✨ ATS-Optimized</div>
+      <h1 class="hero-title">Aditya's <span class="gradient-text">Resume Builder</span></h1>
+      <p class="hero-subtitle">Craft a job-winning, ATS-friendly resume in minutes. Live preview, instant PDF download.
+      </p>
+    </div>
+    <div class="hero-orbs">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ MAIN APP LAYOUT ═══════════════════ -->
+  <main class="app-layout" id="app-layout">
+
+    <!-- ─── LEFT PANEL: FORM ─── -->
+    <aside class="form-panel" id="form-panel">
+
+      <!-- Section Navigation Cards -->
+      <div class="section-nav" id="section-nav">
+        <button class="nav-card active" data-section="personal">
+          <span class="nav-card-icon">👤</span>
+          <span class="nav-card-label">Personal</span>
+        </button>
+        <button class="nav-card" data-section="education">
+          <span class="nav-card-icon">🎓</span>
+          <span class="nav-card-label">Education</span>
+        </button>
+        <button class="nav-card" data-section="experience">
+          <span class="nav-card-icon">💼</span>
+          <span class="nav-card-label">Experience</span>
+        </button>
+        <button class="nav-card" data-section="skills">
+          <span class="nav-card-icon">⚡</span>
+          <span class="nav-card-label">Skills</span>
+        </button>
+        <button class="nav-card" data-section="projects">
+          <span class="nav-card-icon">🚀</span>
+          <span class="nav-card-label">Projects</span>
+        </button>
+        <button class="nav-card" data-section="certifications">
+          <span class="nav-card-icon">🏆</span>
+          <span class="nav-card-label">Certs</span>
+        </button>
+        <button class="nav-card" data-section="languages">
+          <span class="nav-card-icon">🌐</span>
+          <span class="nav-card-label">Languages</span>
+        </button>
+        <button class="nav-card" data-section="awards">
+          <span class="nav-card-icon">🥇</span>
+          <span class="nav-card-label">Awards</span>
+        </button>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="progress-wrapper">
+        <div class="progress-bar" id="progress-bar"></div>
+        <span class="progress-label" id="progress-label">0% complete</span>
+      </div>
+
+      <!-- ─── SECTION: Personal Info ─── -->
+      <section class="form-section active" id="section-personal" data-section="personal">
+        <div class="section-header">
+          <div class="section-icon">👤</div>
+          <div>
+            <h2 class="section-title">Personal Information</h2>
+            <p class="section-desc">Your contact details and professional summary</p>
+          </div>
+        </div>
+
+        <!-- Photo Upload -->
+        <div class="photo-upload-wrapper">
+          <div class="photo-preview" id="photo-preview">
+            <span class="photo-placeholder">📷</span>
+          </div>
+          <div class="photo-upload-info">
+            <label for="photo-upload" class="btn btn-ghost btn-sm">Upload Photo</label>
+            <input type="file" id="photo-upload" accept="image/*" class="hidden" />
+            <button id="btn-remove-photo" class="btn btn-ghost btn-sm btn-danger hidden">Remove</button>
+            <p class="photo-hint">Optional • JPG, PNG (max 2MB)</p>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="full-name">Full Name <span class="required">*</span></label>
+            <input type="text" id="full-name" placeholder="e.g. Aditya Singh Rathore" maxlength="80" />
+          </div>
+          <div class="form-group">
+            <label for="job-title">Professional Title <span class="required">*</span></label>
+            <input type="text" id="job-title" placeholder="e.g. Software Engineer" maxlength="80" />
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address <span class="required">*</span></label>
+            <input type="email" id="email" placeholder="you@example.com" />
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" placeholder="+91 98765 43210" />
+          </div>
+          <div class="form-group">
+            <label for="location">Location</label>
+            <input type="text" id="location" placeholder="City, State, Country" />
+          </div>
+          <div class="form-group">
+            <label for="date-of-birth">Date of Birth</label>
+            <input type="text" id="date-of-birth" placeholder="e.g. 15 Aug 2002" />
+          </div>
+          <div class="form-group">
+            <label for="nationality">Nationality</label>
+            <input type="text" id="nationality" placeholder="e.g. Indian" />
+          </div>
+          <div class="form-group">
+            <label for="linkedin">LinkedIn URL</label>
+            <input type="url" id="linkedin" placeholder="linkedin.com/in/username" />
+          </div>
+          <div class="form-group">
+            <label for="github">GitHub / Portfolio</label>
+            <input type="url" id="github" placeholder="github.com/username" />
+          </div>
+          <div class="form-group">
+            <label for="website">Personal Website</label>
+            <input type="url" id="website" placeholder="www.yoursite.com" />
+          </div>
+          <div class="form-group">
+            <label for="resumeType">Resume Type / Target Role</label>
+            <select id="resumeType">
+              <option value="">Select type...</option>
+              <option value="Software Engineer">Software Engineer</option>
+              <option value="Data Scientist">Data Scientist</option>
+              <option value="Full Stack Developer">Full Stack Developer</option>
+              <option value="ECE Engineer">ECE Engineer</option>
+              <option value="Product Manager">Product Manager</option>
+              <option value="Designer">UI/UX Designer</option>
+              <option value="Fresher">Fresher / Entry Level</option>
+              <option value="Intern">Internship</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-group full-width">
+            <label for="summary">Professional Summary</label>
+            <textarea id="summary" rows="4"
+              placeholder="A brief, impactful summary of your professional background, key skills, and career goals (2-4 sentences)..."
+              maxlength="600"></textarea>
+            <span class="char-count" id="summary-count">0 / 600</span>
+          </div>
+          <div class="form-group full-width">
+            <label for="objective">Career Objective <span class="field-optional">(optional)</span></label>
+            <textarea id="objective" rows="2" placeholder="Short career objective for freshers or career changers..."
+              maxlength="300"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── SECTION: Education ─── -->
+      <section class="form-section" id="section-education" data-section="education">
+        <div class="section-header">
+          <div class="section-icon">🎓</div>
+          <div>
+            <h2 class="section-title">Education</h2>
+            <p class="section-desc">Academic qualifications and degrees</p>
+          </div>
+        </div>
+        <div id="education-entries"></div>
+        <button class="btn btn-add" id="btn-add-education">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+          Add Education
+        </button>
+        <div class="section-tip">💡 List your most recent education first. Include GPA if above 7.5/10.</div>
+      </section>
+
+      <!-- ─── SECTION: Experience ─── -->
+      <section class="form-section" id="section-experience" data-section="experience">
+        <div class="section-header">
+          <div class="section-icon">💼</div>
+          <div>
+            <h2 class="section-title">Work Experience</h2>
+            <p class="section-desc">Professional roles and internships</p>
+          </div>
+        </div>
+        <div id="experience-entries"></div>
+        <div class="add-action-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin-top: 1rem;">
+          <button class="btn btn-add" id="btn-add-experience" style="margin-top: 0;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+            Add Experience
+          </button>
+          <button class="btn btn-ghost" id="btn-no-experience" style="margin-top: 0; display: flex; justify-content: center; align-items: center; gap: 0.4rem; padding: 0.65rem 1.2rem; border: 2px dashed var(--border-color); border-radius: var(--radius-md); font-weight: 600; font-family: var(--font-sans);">
+            🌱 No Experience
+          </button>
+        </div>
+        <div class="section-tip">💡 Use action verbs like "Led", "Built", "Increased". Quantify results where possible.
+        </div>
+      </section>
+
+      <!-- ─── SECTION: Skills ─── -->
+      <section class="form-section" id="section-skills" data-section="skills">
+        <div class="section-header">
+          <div class="section-icon">⚡</div>
+          <div>
+            <h2 class="section-title">Skills</h2>
+            <p class="section-desc">Technical and soft skills</p>
+          </div>
+        </div>
+        <!-- Skill categories quick-add -->
+        <div class="skill-category-pills">
+          <span class="skill-cat-label">Quick Category:</span>
+          <button class="cat-pill" data-cat="Technical">💻 Technical</button>
+          <button class="cat-pill" data-cat="Framework">🔧 Frameworks</button>
+          <button class="cat-pill" data-cat="Tool">🛠 Tools</button>
+          <button class="cat-pill" data-cat="Soft Skill">🤝 Soft Skills</button>
+          <button class="cat-pill" data-cat="Language">📝 Languages</button>
+        </div>
+
+        <div id="skills-entries"></div>
+        <button class="btn btn-add" id="btn-add-skill">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+          Add Skill
+        </button>
+
+        <div class="skills-hint-box">
+          <p>💡 <strong>ATS Tip:</strong> Add skills as relevant keywords from job descriptions. Keep them clean and
+            keyword-rich for ATS parsers.</p>
+        </div>
+      </section>
+
+      <!-- ─── SECTION: Projects ─── -->
+      <section class="form-section" id="section-projects" data-section="projects">
+        <div class="section-header">
+          <div class="section-icon">🚀</div>
+          <div>
+            <h2 class="section-title">Projects</h2>
+            <p class="section-desc">Personal and academic projects</p>
+          </div>
+        </div>
+        <div id="projects-entries"></div>
+        <button class="btn btn-add" id="btn-add-project">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+          Add Project
+        </button>
+        <div class="section-tip">💡 Include GitHub links and describe impact. Projects are crucial for freshers!</div>
+      </section>
+
+      <!-- ─── SECTION: Certifications ─── -->
+      <section class="form-section" id="section-certifications" data-section="certifications">
+        <div class="section-header">
+          <div class="section-icon">🏆</div>
+          <div>
+            <h2 class="section-title">Certifications</h2>
+            <p class="section-desc">Professional certifications and awards</p>
+          </div>
+        </div>
+        <div id="certification-entries"></div>
+        <button class="btn btn-add" id="btn-add-certification">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+          Add Certification
+        </button>
+        <div class="section-tip">💡 Add Coursera, Udemy, Google, AWS, or NPTEL certifications. They boost ATS ranking.
+        </div>
+      </section>
+
+      <!-- ─── SECTION: Languages ─── -->
+      <section class="form-section" id="section-languages" data-section="languages">
+        <div class="section-header">
+          <div class="section-icon">🌐</div>
+          <div>
+            <h2 class="section-title">Languages</h2>
+            <p class="section-desc">Spoken and written language proficiency</p>
+          </div>
+        </div>
+        <div id="language-entries"></div>
+        <button class="btn btn-add" id="btn-add-language">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+          Add Language
+        </button>
+        <div class="section-tip">💡 Include fluency level: Native, Fluent, Conversational, Basic.</div>
+      </section>
+
+      <!-- ─── SECTION: Awards & Achievements ─── -->
+      <section class="form-section" id="section-awards" data-section="awards">
+        <div class="section-header">
+          <div class="section-icon">🥇</div>
+          <div>
+            <h2 class="section-title">Awards & Achievements</h2>
+            <p class="section-desc">Academic, professional honours and recognitions</p>
+          </div>
+        </div>
+        <div id="awards-entries"></div>
+        <button class="btn btn-add" id="btn-add-award">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+          Add Award / Achievement
+        </button>
+        <div class="section-tip">💡 Hackathon wins, scholarships, merit lists, competition rankings all count!</div>
+      </section>
+
+      <!-- Bottom Actions -->
+      <div class="form-bottom-actions">
+        <button class="btn btn-primary btn-lg" id="btn-download-pdf-bottom">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          Download PDF Resume
+        </button>
+        <button class="btn btn-ghost" id="btn-clear-form">Clear All</button>
+      </div>
+
+    </aside>
+
+    <!-- ─── RIGHT PANEL: LIVE PREVIEW ─── -->
+    <div class="preview-panel" id="preview-panel">
+      <div class="preview-toolbar">
+        <span class="preview-label">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+          Live Preview
+        </span>
+        <div class="preview-toolbar-right">
+          <span class="ats-badge">✅ ATS Friendly</span>
+          <button class="btn btn-ghost btn-sm" id="btn-zoom-out" title="Zoom out">–</button>
+          <span class="zoom-level" id="zoom-level">85%</span>
+          <button class="btn btn-ghost btn-sm" id="btn-zoom-in" title="Zoom in">+</button>
+        </div>
+      </div>
+
+      <div class="preview-scroll-area">
+        <div class="preview-scale-wrapper" id="preview-scale-wrapper">
+          <!-- ════════════════════════════════════════ -->
+          <!--         ATS RESUME DOCUMENT              -->
+          <!-- ════════════════════════════════════════ -->
+          <div id="resume-document" class="resume-document">
+
+            <!-- Resume Header -->
+            <header class="rv-header" id="rv-header">
+              <div class="rv-photo-wrapper hidden" id="rv-photo-wrapper">
+                <img id="rv-photo" src="" alt="Profile Photo" class="rv-photo" />
+              </div>
+              <div class="rv-header-info">
+                <h1 class="rv-name" id="rv-name">Your Name</h1>
+                <p class="rv-title" id="rv-job-title">Professional Title</p>
+                <div class="rv-contact" id="rv-contact">
+                  <span class="rv-contact-item" id="rv-email-display"></span>
+                  <span class="rv-contact-item" id="rv-phone-display"></span>
+                  <span class="rv-contact-item" id="rv-location-display"></span>
+                  <span class="rv-contact-item" id="rv-linkedin-display"></span>
+                  <span class="rv-contact-item" id="rv-github-display"></span>
+                  <span class="rv-contact-item" id="rv-website-display"></span>
+                </div>
+              </div>
+            </header>
+
+            <!-- Resume Divider -->
+            <div class="rv-divider"></div>
+
+            <!-- Extra personal info strip -->
+            <div class="rv-extra-strip" id="rv-extra-strip"></div>
+
+            <!-- Professional Summary -->
+            <section class="rv-section" id="rv-summary-section">
+              <h2 class="rv-section-title">Professional Summary</h2>
+              <p class="rv-summary-text" id="rv-summary-text"></p>
+            </section>
+
+            <!-- Experience -->
+            <section class="rv-section" id="rv-experience-section">
+              <h2 class="rv-section-title">Work Experience</h2>
+              <div id="rv-experience-list"></div>
+            </section>
+
+            <!-- Education -->
+            <section class="rv-section" id="rv-education-section">
+              <h2 class="rv-section-title">Education</h2>
+              <div id="rv-education-list"></div>
+            </section>
+
+            <!-- Skills -->
+            <section class="rv-section" id="rv-skills-section">
+              <h2 class="rv-section-title">Skills</h2>
+              <div id="rv-skills-list"></div>
+            </section>
+
+            <!-- Projects -->
+            <section class="rv-section" id="rv-projects-section">
+              <h2 class="rv-section-title">Projects</h2>
+              <div id="rv-projects-list"></div>
+            </section>
+
+            <!-- Certifications -->
+            <section class="rv-section" id="rv-certifications-section">
+              <h2 class="rv-section-title">Certifications</h2>
+              <div id="rv-certifications-list"></div>
+            </section>
+
+            <!-- Languages -->
+            <section class="rv-section" id="rv-languages-section">
+              <h2 class="rv-section-title">Languages</h2>
+              <div id="rv-languages-list"></div>
+            </section>
+
+            <!-- Awards -->
+            <section class="rv-section" id="rv-awards-section">
+              <h2 class="rv-section-title">Awards &amp; Achievements</h2>
+              <div id="rv-awards-list"></div>
+            </section>
+
+          </div>
+          <!-- End resume-document -->
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ═══════════════════ TOAST NOTIFICATIONS ═══════════════════ -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- ═══════════════════ CONFIRM MODAL ═══════════════════ -->
+  <div class="modal-overlay hidden" id="modal-overlay">
+    <div class="modal-box" id="modal-box">
+      <div class="modal-icon">⚠️</div>
+      <h3 class="modal-title" id="modal-title">Are you sure?</h3>
+      <p class="modal-message" id="modal-message">This action cannot be undone.</p>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="modal-cancel">Cancel</button>
+        <button class="btn btn-danger" id="modal-confirm">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
